@@ -1,11 +1,11 @@
 HexonetAPI
 ==========
 
-C# API for (Hexonet.com)[http://hexonet.com] domain reseller, with this api you can create your own domain registrar. This api is created for integrate with a (http://www.websitepanel.net/)[http://www.websitepanel.net/] module for customers can register and manage domains inside panel
+C# API for [Hexonet.com](http://hexonet.com) domain reseller, with this api you can create your own domain registrar. This api is created for integrate with a [WebSite Panel](http://www.websitepanel.net/) module for customers can register and manage domains inside panel
 
 
 #### How to implement:
-Implement is super easy. First make a connection to Hexonet API with you private credentials, this will run on server side and is secure. After that call command see (https://www.hexonet.net/software/reseller-api)[https://www.hexonet.net/software/reseller-api] for more informations about api commands accepted.
+Implement is super easy. First make a connection to Hexonet API with you private credentials, this will run on server side and is secure. After that call command see [https://www.hexonet.net/software/reseller-api](https://www.hexonet.net/software/reseller-api) for more informations about api commands accepted.
 
 After all you can return commnd result inside a List<string> here you can parse like you want.
 
