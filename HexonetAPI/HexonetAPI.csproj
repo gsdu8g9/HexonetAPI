@@ -40,10 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Command.cs" />
     <Compile Include="Connection.cs" />
-    <Compile Include="INI.cs" />
+    <Compile Include="INI\FileNotSpecifiedException.cs" />
+    <Compile Include="INI\Section.cs" />
+    <Compile Include="INI\INIFile.cs" />
+    <Compile Include="INI\Key.cs" />
+    <Compile Include="INI\KeyNotFoundException.cs" />
+    <Compile Include="INI\SectionNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Response.cs" />
+    <Compile Include="User.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

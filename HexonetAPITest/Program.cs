@@ -10,11 +10,12 @@ namespace HexonetAPITest
     {
         static void Main(string[] args)
         {
-            HexonetAPI.Connection connection = new HexonetAPI.Connection("https://coreapi.1api.net/api/call.cgi", "1234", "login", "password");
+            HexonetAPI.Connection connection = new HexonetAPI.Connection(new User("1234", "login", "password"));
 
-            Dictionary<string, string> command = new Dictionary<string, string>();
+            Command command = new Command();
             command.Add("COMMAND", "CheckDomain");
             command.Add("DOMAIN", "microsoft.com");
+
             Response response = connection.Request(command);
             List<string> lst = response.AsList();
 

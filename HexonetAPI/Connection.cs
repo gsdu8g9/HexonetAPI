@@ -4,61 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Web;
 
 namespace HexonetAPI
 {
     public class Connection
     {
-
-        /// <summary>
-        /// Gets or sets the entity.
-        /// </summary>
-        /// <value>
-        /// The entity.
-        /// </value>
-        public string Entity { get; set; }
-
-        /// <summary>
-        /// Gets or sets the URL.
-        /// </summary>
-        /// <value>
-        /// The URL.
-        /// </value>
-        public string URL { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user.
-        /// </summary>
-        /// <value>
-        /// The user.
-        /// </value>
-        public string User { get; set; }
-
-        /// <summary>
-        /// Gets or sets the login.
-        /// </summary>
-        /// <value>
-        /// The login.
-        /// </value>
-        public string  Login { get; set; }
-
-        /// <summary>
-        /// Gets or sets the password.
-        /// </summary>
-        /// <value>
-        /// The password.
-        /// </value>
-        public string Password { get; set; }
-
-        /// <summary>
-        /// Gets or sets the role.
-        /// </summary>
-        /// <value>
-        /// The role.
-        /// </value>
-        public string Role { get; set; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Connection"/> class.
         /// </summary>
@@ -70,69 +20,56 @@ namespace HexonetAPI
         /// <summary>
         /// Initializes a new instance of the <see cref="Connection"/> class.
         /// </summary>
-        /// <param name="URL">The URL.</param>
-        /// <param name="Entity">The entity.</param>
-        /// <param name="Login">The login.</param>
-        /// <param name="Password">The password.</param>
-        public Connection(string URL, string Entity, string Login, string Password)
-            : this()
+        /// <param name="params">The @params.</param>
+        public Connection(User user)
+            : this(user.Uri, user.Entity, user.Username, user.Password)
         {
-            this.URL = URL;
-            this.Entity = Entity;
-            this.Login = Login;
-            this.Password = Password;
+
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Connection"/> class.
         /// </summary>
-        /// <param name="params">The @params.</param>
-        public Connection(IDictionary<string, string> @params)
+        /// <param name="URL">The URL.</param>
+        /// <param name="Entity">The entity.</param>
+        /// <param name="Login">The login.</param>
+        /// <param name="Password">The password.</param>
+        public Connection(Uri url, string entity, string userName, string password)
             : this()
         {
-            string sURL;
-            string sEntity;
-            string sLogin;
-            string sPassword;
-            
-            @params.TryGetValue("URL", out  sURL);
-            @params.TryGetValue("Entity", out sEntity);
-            @params.TryGetValue("Login", out sLogin);
-            @params.TryGetValue("Passowrd", out sPassword);
-
-            this.URL = sURL;
-            this.Entity = sEntity;
-            this.Login = sLogin;
-            this.Password = sPassword;
+            this.Uri = url;
+            this.Entity = entity;
+            this.Username = userName;
+            this.Password = password;
         }
 
-    
         /// <summary>
         /// Requests the raw data.
         /// </summary>
-        /// <param name="Command">The command.</param>
-        public string RequestRawData(IDictionary<string, string> Command)
+        /// <param name="command">The command.</param>
+        /// <returns></returns>
+        public string RequestRawData(Command command)
         {
             string sCommand = "";
             string postData = "";
 
-            foreach (var key in Command.Keys)
+            foreach (var key in command.Keys)
             {
                 string value;
-                if (Command.TryGetValue(key, out value))
+                if (command.TryGetValue(key, out value))
                 {
-                    sCommand += key + "=" + value + "\n";
+                    sCommand += string.Format("{0}={1}\n", key, value);
                 }
             }
 
-            postData += "s_entity=" + this.Entity + "&";
-            postData += "s_login=" + this.Login + "&";
-            postData += "s_pw=" + this.Password + "&";
+            postData += string.Format("s_entity={0}&", this.Entity);
+            postData += string.Format("s_login={0}&", this.Username);
+            postData += string.Format("s_pw={0}&", this.Password);
             postData += "s_command=" + sCommand;
 
             byte[] byteArray = Encoding.UTF8.GetBytes(postData);
 
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(this.URL);
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(this.Uri);
             httpWebRequest.Accept = "*/*";
             httpWebRequest.Method = "POST";
             httpWebRequest.ContentLength = byteArray.Length;
@@ -154,12 +91,72 @@ namespace HexonetAPI
         /// <summary>
         /// Requests the specified command.
         /// </summary>
-        /// <param name="Command">The command.</param>
+        /// <param name="command">The command.</param>
         /// <returns></returns>
-        public Response Request(IDictionary<string, string> Command)
+        public Response Request(Command command)
         {
-            string request = RequestRawData(Command);
+            string request = RequestRawData(command);
             return new Response(request);
+        }
+
+        /// <summary>
+        /// Gets or sets the entity.
+        /// </summary>
+        /// <value>
+        /// The entity.
+        /// </value>
+        public string Entity
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the URL.
+        /// </summary>
+        /// <value>
+        /// The URL.
+        /// </value>
+        public Uri Uri
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the username.
+        /// </summary>
+        /// <value>
+        /// The username.
+        /// </value>
+        public string Username
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the password.
+        /// </summary>
+        /// <value>
+        /// The password.
+        /// </value>
+        internal string Password
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the role.
+        /// </summary>
+        /// <value>
+        /// The role.
+        /// </value>
+        public string Role
+        {
+            get;
+            set;
         }
 
     }

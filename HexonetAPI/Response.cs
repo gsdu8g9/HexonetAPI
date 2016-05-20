@@ -15,7 +15,11 @@ namespace HexonetAPI
         /// <value>
         /// The code.
         /// </value>
-        public string Code { get; set; }
+        public string Code 
+        { 
+            get; 
+            set;
+        }
 
         /// <summary>
         /// Gets or sets the description.
@@ -23,7 +27,11 @@ namespace HexonetAPI
         /// <value>
         /// The description.
         /// </value>
-        public string Description { get; set; }
+        public string Description
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Response"/> class.
